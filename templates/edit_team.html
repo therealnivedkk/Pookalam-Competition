@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Edit Team{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow p-4">
+
+                <h2>Edit Team</h2>
+
+                <form method="POST" action="/update_team/{{ team._id }}">
+
+                    <div class="mb-3">
+                        <label>Team Name</label>
+                        <input type="text" name="team_name" class="form-control"
+                               value="{{ team.team_name }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>College</label>
+                        <input type="text" name="college" class="form-control"
+                               value="{{ team.college }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Members</label>
+                        <input type="text" name="members" class="form-control"
+                               value="{{ team.members | join(', ') }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Pookalam Theme</label>
+                        <select name="theme" class="form-control" required>
+                            <option value="" disabled>Select a theme</option>
+                            {% for t in ['Traditional','Mythology','Modern'] %}
+                                <option value="{{ t }}"
+                                    {% if team.theme == t %}selected{% endif %}>
+                                    {{ t }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button class="btn btn-warning w-100">Update</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

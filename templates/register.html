@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Register Team{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow p-4">
+
+                <h2 class="text-center mb-1">Team Registration</h2>
+                <p class="text-center text-muted mb-3">Onam Pookalam Competition 2026</p>
+
+                <form method="POST" action="/add_team" enctype="multipart/form-data">
+
+                    <div class="mb-3">
+                        <label>Team Name</label>
+                        <input type="text" name="team_name" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>College</label>
+                        <input type="text" name="college" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Members</label>
+                        <input type="text" name="members" id="members"
+                               class="form-control"
+                               placeholder="eg. Alice, Bob (max 5)" required>
+                        <small class="text-danger" id="memberError"></small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Pookalam Theme</label>
+                        <select name="theme" class="form-control" required>
+                            <option value="" disabled selected>Select a theme</option>
+                            <option value="Traditional">Traditional</option>
+                            <option value="Mythology">Mythology</option>
+                            <option value="Modern">Modern</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Upload Pookalam Image</label>
+                        <input type="file" name="pookalam_image" class="form-control"
+                               accept=".jpg,.jpeg,.png">
+                        <small class="text-muted">Accepted formats: jpg, jpeg, png</small>
+                    </div>
+
+                    <button class="btn btn-success w-100">Register</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- js for team members validation-->
+{% block extra_js %}
+<script>
+document.getElementById("members").addEventListener("input", function () {
+    const names = this.value
+        .split(",")
+        .map(name => name.trim())
+        .filter(name => name !== "");
+
+    const error = document.getElementById("memberError");
+
+    if (names.length > 5) {
+        error.textContent = "Maximum 5 members allowed.";
+        this.setCustomValidity("Maximum 5 members allowed.");
+    } else {
+        error.textContent = "";
+        this.setCustomValidity("");
+    }
+});
+</script>
+{% endblock %}

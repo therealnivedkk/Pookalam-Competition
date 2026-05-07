@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Score Form{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <h2>Score Team: {{ team.team_name }}</h2>
+    <p class="text-muted">College: {{ team.college }}</p>
+
+    <form method="POST" action="/submit_score" class="card p-4 shadow">
+
+        <input type="hidden" name="team_id" value="{{ team._id }}">
+
+        <div class="mb-3">
+            <label>Symmetry (0-10)</label>
+            
+            <input type="number" name="symmetry" class="form-control"
+                   min="0" max="10" step="0.1" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Color Harmony (0-10)</label>
+            <input type="number" name="color" class="form-control"
+                   min="0" max="10" step="0.1" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Variety of Flowers (0-10)</label>
+            <input type="number" name="variety" class="form-control"
+                   min="0" max="10" step="0.1" required>
+        </div>
+
+        <button class="btn btn-primary w-100">Submit Score</button>
+
+    </form>
+
+    <!-- Show previously submitted scores for this team -->
+    {% if team.scores %}
+    <div class="card p-3 mt-4 shadow-sm">
+        <h5>Scores Already Submitted</h5>
+        <table class="table table-sm mt-2">
+            <thead>
+                <tr>
+                    <th>Judge</th>
+                    <th>Symmetry</th>
+                    <th>Color</th>
+                    <th>Variety</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in team.scores %}
+                <tr>
+                    <td>{{ s.judge }}</td>
+                    <td>{{ s.symmetry }}</td>
+                    <td>{{ s.color }}</td>
+                    <td>{{ s.variety }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

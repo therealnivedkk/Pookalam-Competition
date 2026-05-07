@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% block title %}Live Leaderboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .leaderboard-header {
+        background: linear-gradient(135deg, #2d6a4f, #52b788);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+    }
+
+    .leaderboard-header h2 {
+        font-size: 2rem;
+        margin: 0;
+        color: white;
+    }
+
+    .leaderboard-header p {
+        margin: 0.3rem 0 0;
+        opacity: 0.85;
+        font-size: 0.9rem;
+    }
+
+    .team-card {
+        border-radius: 14px;
+        padding: 1rem 1.4rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        border: 1px solid #EDE8D8;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .team-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    }
+
+    /* first 3 position style */
+    .rank-1 { border-left: 5px solid #FFD700; background: #FFFDF0; }
+    .rank-2 { border-left: 5px solid #C0C0C0; background: #FAFAFA; }
+    .rank-3 { border-left: 5px solid #CD7F32; background: #FDF8F4; }
+
+    .rank-badge {
+        font-size: 1.8rem;
+        min-width: 2.5rem;
+        text-align: center;
+        font-weight: 800;
+        color: #888;
+    }
+
+    .rank-1 .rank-badge { color: #FFD700; }
+    .rank-2 .rank-badge { color: #A8A8A8; }
+    .rank-3 .rank-badge { color: #CD7F32; }
+
+    .team-info { flex: 1; }
+
+    .team-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #2C2C2C;
+        margin: 0;
+    }
+
+    .team-college {
+        font-size: 0.82rem;
+        color: #888;
+        margin: 0;
+    }
+
+    .score-section { text-align: right; }
+
+    .total-score {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #2d6a4f;
+        line-height: 1;
+    }
+
+    .avg-score {
+        font-size: 0.78rem;
+        color: #aaa;
+        margin-top: 2px;
+    }
+
+    .judge-count {
+        font-size: 0.75rem;
+        color: #bbb;
+    }
+
+    .no-teams {
+        text-align: center;
+        padding: 3rem;
+        color: #aaa;
+        font-size: 1rem;
+    }
+
+    .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.2);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+    }
+
+    .live-dot {
+        width: 8px; height: 8px;
+        background: #90EE90;
+        border-radius: 50%;
+        animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <!-- Header -->
+    <div class="leaderboard-header">
+        <h2>Live Leaderboard</h2>
+        <p>Onam Pookalam Competition 2026</p>
+        <div class="live-badge">
+            <div class="live-dot"></div>
+            Live — updates every 5 seconds
+        </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div id="leaderboard">
+        {% if teams %}
+            {% for team in teams %}
+            <div class="team-card rank-{{ team.rank if team.rank <= 3 else '' }}">
+
+                <!-- Rank -->
+                <div class="rank-badge">
+                    {% if team.rank == 1 %}🥇
+                    {% elif team.rank == 2 %}🥈
+                    {% elif team.rank == 3 %}🥉
+                    {% else %}#{{ team.rank }}
+                    {% endif %}
+                </div>
+
+                <!-- Team Info -->
+                <div class="team-info">
+                    <p class="team-name">{{ team._id }}</p>
+                    <p class="team-college">{{ team.college }}</p>
+                </div>
+
+                <!-- Score -->
+                <div class="score-section">
+                    <div class="total-score">{{ team.total_score }}</div>
+                    <div class="avg-score">Avg: {{ (team.avg_score or 0) | round(2) }}</div>
+                </div>
+
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-teams">
+                🌼 No scores submitted yet. Check back soon!
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function refreshLeaderboard() {
+    fetch('/api/leaderboard')
+        .then(response => response.json())
+        .then(teams => {
+            let html = '';
+
+            if (teams.length === 0) {
+                html = '<div class="no-teams">🌼 No scores submitted yet. Check back soon!</div>';
+            } else {
+                teams.forEach(team => {
+                    let medal = team.rank === 1 ? '🥇' : team.rank === 2 ? '🥈' : team.rank === 3 ? '🥉' : '#' + team.rank;
+                    let rankClass = team.rank <= 3 ? 'rank-' + team.rank : '';
+                    let avg = team.avg_score ? team.avg_score.toFixed(2) : '0.00';
+
+                    html += `
+                    <div class="team-card ${rankClass}">
+                        <div class="rank-badge">${medal}</div>
+                        <div class="team-info">
+                            <p class="team-name">${team._id}</p>
+                            <p class="team-college">${team.college}</p>
+                        </div>
+                        <div class="score-section">
+                            <div class="total-score">${team.total_score}</div>
+                            <div class="avg-score">Avg: ${avg}</div>
+                        </div>
+                    </div>`;
+                });
+            }
+            document.getElementById('leaderboard').innerHTML = html;
+        });
+}
+
+// Refresh every 5 seconds
+setInterval(refreshLeaderboard, 5000);
+</script>
+{% endblock %}

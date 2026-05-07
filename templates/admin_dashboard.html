@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <h2 class="mb-4 text-center">Admin Dashboard</h2>
+
+    <!-- ── CREATE JUDGE ── -->
+    <div class="card shadow p-4 mb-4">
+        <h5 class="mb-3">➕ Create New Judge</h5>
+        <form method="POST" action="/admin/create_judge" class="row g-3">
+            <div class="col-md-5">
+                <input type="text" name="username" class="form-control"
+                       placeholder="Judge Username" required>
+            </div>
+            <div class="col-md-5">
+                <input type="password" name="password" class="form-control"
+                       placeholder="Password" required>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success w-100">Create</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ── JUDGES LIST ── -->
+    <div class="card shadow p-4 mb-4">
+        <h5 class="mb-3">Judges</h5>
+        {% if judges %}
+        <table class="table table-bordered table-hover">
+            <thead class="table-success">
+                <tr>
+                    <th>No.</th>
+                    <th>Username</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for judge in judges %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ judge.username }}</td>
+                    <td>
+                        <form action="/admin/delete_judge/{{ judge._id }}" method="POST"
+                              style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this judge?')">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p class="text-muted">No judges created yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- ── TEAMS LIST ── 
+    <div class="card shadow p-4">
+        <h5 class="mb-3">Registered Teams</h5>
+        {% if teams %}
+        <table class="table table-bordered table-hover">
+            <thead class="table-success">
+                <tr>
+                    <th>#</th>
+                    <th>Team Name</th>
+                    <th>College</th>
+                    <th>Members</th>
+                    <th>Scores</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ team.team_name }}</td>
+                    <td>{{ team.college }}</td>
+                    <td>{{ team.members | join(', ') }}</td>
+                    <td>{{ team.scores | length }} judge(s)</td>
+                    <td>
+                        <a href="/edit_team/{{ team._id }}"
+                           class="btn btn-primary btn-sm">Edit</a>
+                        <form action="/admin/delete_team/{{ team._id }}" method="POST"
+                              style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Delete this team?')">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p class="text-muted">No teams registered yet.</p>
+        {% endif %}
+    </div> -->
+
+</div>
+{% endblock %}

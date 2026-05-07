@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- ── HERO SECTION ── -->
+<div style="background: linear-gradient(135deg, #2d6a4f, #52b788); color: white; padding: 4rem 2rem; text-align: center;">
+    <h1 style="font-size: 2.8rem; font-weight: 800;">🌸 Onam Pookalam Competition 2026</h1>
+    <p style="font-size: 1.1rem; opacity: 0.9; margin-top: 0.5rem;">
+        Celebrate the spirit of Onam through the art of floral design
+    </p>
+    <div class="mt-4">
+        <a href="/register" class="btn btn-warning btn-lg me-3">Register Your Team</a>
+        <a href="/leaderboard" class="btn btn-outline-light btn-lg">View Leaderboard</a>
+    </div>
+</div>
+
+<div class="container mt-5">
+
+    <!-- ── ABOUT SECTION ── -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8 text-center">
+            <h2 class="mb-3">What is Pookalam?</h2>
+            <p class="text-muted" style="font-size: 1rem; line-height: 1.8;">
+                Pookalam is a beautiful floral carpet made from fresh flowers,
+                traditionally created during the festival of Onam in Kerala.
+                Teams compete by designing intricate and colorful patterns on the
+                ground using a variety of flowers, showcasing creativity, symmetry,
+                and cultural pride. It is one of the most cherished traditions of
+                Onam celebrations.
+            </p>
+        </div>
+    </div>
+
+    <!-- ── HOW IT WORKS ── -->
+    <h2 class="text-center mb-4">How the Competition Works</h2>
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center h-100">
+                <div style="font-size: 2.5rem;">📝</div>
+                <h5 class="mt-3">Step 1</h5>
+                <h6 class="text-success">Register</h6>
+                <p class="text-muted small">
+                    Teams register with their college name, member details,
+                    and chosen theme for their Pookalam design.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center h-100">
+                <div style="font-size: 2.5rem;">🌺</div>
+                <h5 class="mt-3">Step 2</h5>
+                <h6 class="text-success">Design</h6>
+                <p class="text-muted small">
+                    Teams create their Pookalam using fresh flowers and upload
+                    a photo of their completed design for judging.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center h-100">
+                <div style="font-size: 2.5rem;">⭐</div>
+                <h5 class="mt-3">Step 3</h5>
+                <h6 class="text-success">Judging</h6>
+                <p class="text-muted small">
+                    Certified judges evaluate each Pookalam on three criteria —
+                    Symmetry, Color Harmony, and Variety of Flowers — each scored out of 10.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center h-100">
+                <div style="font-size: 2.5rem;">🏆</div>
+                <h5 class="mt-3">Step 4</h5>
+                <h6 class="text-success">Results</h6>
+                <p class="text-muted small">
+                    Scores from all judges are aggregated in real time.
+                    The Live Leaderboard ranks teams by their total score.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ── SCORING CRITERIA ── -->
+    <div class="card shadow p-4 mb-5">
+        <h2 class="text-center mb-4">Scoring Criteria</h2>
+        <div class="row text-center">
+
+            <div class="col-md-4 mb-3">
+                <div style="font-size: 2rem;">🔄</div>
+                <h5 class="mt-2 text-success">Symmetry</h5>
+                <p class="text-muted small">
+                    How balanced and proportional is the design?
+                    Judges look for perfect alignment and geometric precision.
+                </p>
+                <span class="badge bg-success">Out of 10</span>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div style="font-size: 2rem;">🎨</div>
+                <h5 class="mt-2 text-success">Color Harmony</h5>
+                <p class="text-muted small">
+                    How well do the colors blend together?
+                    Judges evaluate the use of contrasting and complementary flower colors.
+                </p>
+                <span class="badge bg-success">Out of 10</span>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div style="font-size: 2rem;">🌸</div>
+                <h5 class="mt-2 text-success">Variety of Flowers</h5>
+                <p class="text-muted small">
+                    How many different types of flowers are used?
+                    Greater variety shows creativity and effort.
+                </p>
+                <span class="badge bg-success">Out of 10</span>
+            </div>
+
+        </div>
+        <p class="text-center text-muted mt-2">
+            <strong>Maximum Score: 30 points per judge</strong>
+        </p>
+    </div>
+
+    <!-- ── CTA ── -->
+    <div class="text-center mb-5">
+        <h3>Ready to Participate?</h3>
+        <p class="text-muted">Register your team now and showcase your floral artistry!</p>
+        <a href="/register" class="btn btn-success btn-lg">Register Your Team 🌸</a>
+    </div>
+
+</div>
+
+{% endblock %}

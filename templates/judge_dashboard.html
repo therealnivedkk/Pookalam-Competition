@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Judge Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <h2 class="mb-4 text-center">Judge Dashboard</h2>
+    <!-- <p class="text-muted mb-4">Logged in as <strong>{{ current_user.username }}</strong></p> -->
+
+    <!-- ── TEAMS LIST ── -->
+    <div class="card shadow p-4">
+        <h5 class="mb-3">Teams to Evaluate</h5>
+
+        {% if teams %}
+        <table class="table table-bordered table-hover">
+            <thead class="table-warning">
+                <tr>
+                    <th>No</th>
+                    <th>Team Name</th>
+                    <th>College</th>
+                    <th>Members</th>
+                    <th>Your Score</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for team in teams %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ team.team_name }}</td>
+                    <td>{{ team.college }}</td>
+                    <td>{{ team.members | join(', ') }}</td>
+                    <td>
+                        <!-- Check if this judge already scored this team -->
+                        {% set scored = false %}
+                        {% for s in team.scores %}
+                            {% if s.judge == current_user.username %}
+                                <span class="badge bg-success">
+                                    {{ s.symmetry + s.color + s.variety }}/30
+                                </span>
+                                {% set scored = true %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if not scored %}
+                            <span class="badge bg-secondary">Not scored</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/score_form/{{ team._id }}"
+                           class="btn btn-warning btn-sm">
+                            {% set scored = false %}
+                            {% for s in team.scores %}
+                                {% if s.judge == current_user.username %}
+                                    {% set scored = true %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if scored %}
+                                ✏️ Edit Score
+                            {% else %}
+                                ⭐ Give Score
+                            {% endif %}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+            <p class="text-muted">No teams registered yet.</p>
+        {% endif %}
+
+    </div>
+
+</div>
+{% endblock %}

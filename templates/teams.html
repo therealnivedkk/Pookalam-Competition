@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Registered Teams | VARNA 26{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center align-items-center mb-4 gap-3">
+        <h2>Registered Teams</h2>
+        <span class="badge bg-success fs-6">{{ teams|length }} Team{% if teams|length != 1 %}s{% endif %}</span>
+    </div>
+
+    <div class="row g-4">
+        {% for team in teams %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <!-- Team Image Display -->
+                {% if team.pookalam_image %}
+                <img src="{{ url_for('static', filename='uploads/' + team.pookalam_image) }}" 
+                     class="card-img-top" alt="Pookalam" style="height: 220px; object-fit: cover;">
+                {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                    <span class="text-muted">No Pookalam Image Uploaded</span>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title text-success fw-bold">{{ team.team_name }}</h5>
+                    <p class="mb-1 text-muted"><strong>College:</strong> {{ team.college }}</p>
+                    <p class="mb-3 text-muted"><strong>Theme:</strong> {{ team.theme }}</p>
+                    
+                    <div class="bg-light p-2 rounded">
+                        <h6 class="small fw-bold mb-1">Participants:</h6>
+                        <ul class="mb-0 small">
+                            {% for member in team.members %}
+                            <li>{{ member }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Admin Only Actions -->
+                {% if current_user.role == "admin" %}
+                <div class="card-footer bg-white border-top-0 d-flex justify-content-between pb-3">
+                    <a href="/edit_team/{{ team._id }}" class="btn btn-sm btn-outline-primary px-3">Edit</a>
+                    <form action="/admin/delete_team/{{ team._id }}" method="POST" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger px-3" 
+                                onclick="return confirm('Are you sure you want to delete this team?')">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12 text-center py-5">
+            <div class="card p-5 bg-light">
+                <p class="text-muted mb-0">No teams have registered for the competition yet.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
