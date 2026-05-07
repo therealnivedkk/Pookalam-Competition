@@ -19,7 +19,8 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # --- MongoDB Connection ---
-client = MongoClient("mongodb://127.0.0.1:27017")
+import os
+client = MongoClient(os.environ.get("MONGO_URI"))
 db = client["pookalam_db"]
 teams_col = db["teams"]
 users_col = db["users"]
